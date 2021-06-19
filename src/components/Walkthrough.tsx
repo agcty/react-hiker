@@ -1,23 +1,30 @@
 import React, { useState } from "react";
 
-import { useWalkthrough, WalkthroughContext } from "./WalkthroughContext";
+import { StepperContext, useStepperContext } from "./WalkthroughContext";
 
 interface WalkthroughProps {
   children: React.ReactNode;
+  initialStep: string;
 }
 
-function Walkthrough({ children }: WalkthroughProps) {
-  const idList = React.Children.toArray(children)
-    .filter((c) => (c as any).props?.id)
-    .map((comps) => (comps as any).props.id);
+function Walkthrough({ children, initialStep }: WalkthroughProps) {
+  // get all ids of child Walkthrough.Step components and create a list
+  // we need that for making next() and back() possible
+  const idList: string[] = React.Children.toArray(children)
+    .flat()
+    .filter((c) => c.props?.id)
+    .map((comps) => comps.props.id);
 
   if (checkForDuplicates(idList)) {
     console.error(
-      "Warning! Your walkthrough has duplicate ids which may result in unexpected behaviour!"
+      "Warning! Your walkthrough has duplicate ids which results in unexpected behaviour!"
     );
   }
 
-  const [activeStep, setLocalActiveStep] = useState(idList[0]);
+  const [activeStep, setLocalActiveStep] = useState<string>(
+    // if initialStep is included in idList use that as the component to show, otherwise start with the first Step
+    idList.includes(initialStep) ? initialStep : idList[0]
+  );
 
   const activeIndex = idList.indexOf(activeStep);
 
@@ -25,28 +32,34 @@ function Walkthrough({ children }: WalkthroughProps) {
 
   const { length } = idList;
 
-  const setActiveStep = (newActiveStep: number | string) => {
+  const setActiveStep = (newActiveStep: string) => {
     setLocalActiveStep(newActiveStep);
   };
 
   const next = () => {
+    // canot go further than the last element
+    if (activeIndex === idList.length - 1) {
+      return;
+    }
+
     setLocalActiveStep((old) => idList[idList.indexOf(old) + 1]);
   };
 
-  const goTo = (id: string | number) => {
+  const goTo = (id: string) => {
     setLocalActiveStep(idList[idList.indexOf(id)]);
   };
 
   const back = () => {
-    const newStep = idList.indexOf(activeStep) - 1;
-
-    if (idList.indexOf(newStep) >= 1) {
-      setLocalActiveStep(newStep);
+    // cannot go back more than the first index
+    if (activeIndex === 0) {
+      return;
     }
+
+    setLocalActiveStep((old) => idList[idList.indexOf(old) - 1]);
   };
 
   return (
-    <WalkthroughContext.Provider
+    <StepperContext.Provider
       value={{
         setActiveStep,
         next,
@@ -59,12 +72,14 @@ function Walkthrough({ children }: WalkthroughProps) {
       }}
     >
       {children}
-    </WalkthroughContext.Provider>
+
+      {activeStep}
+    </StepperContext.Provider>
   );
 }
 
 interface WalkthroughStepProps {
-  id: number | string;
+  id: string;
   children: React.ReactNode;
 }
 
@@ -72,10 +87,18 @@ Walkthrough.Step = function WalkthroughStep({
   id,
   children,
 }: WalkthroughStepProps) {
-  const { activeStep } = useWalkthrough();
+  const { activeStep } = useStepperContext();
 
   if (activeStep === id) {
-    return <>{children}</>;
+    return (
+      // <motion.div
+      //   initial={{ opacity: 0 }}
+      //   animate={{ opacity: 1 }}
+      //   exit={{ opacity: 0 }}
+      // >
+      <>{children}</>
+      // </motion.div>
+    );
   }
 
   return <></>;
@@ -86,45 +109,36 @@ interface NextButtonProps {
     next,
     goTo,
     isLast,
+    back,
   }: {
     next: () => void;
-    goTo: (id: string | number) => void;
+    goTo: (id: string) => void;
+    back: () => void;
     isLast: boolean;
   }) => React.ReactNode;
 }
 
-Walkthrough.Next = function NextButton({ children }: NextButtonProps) {
-  const { next, goTo, isLast } = useWalkthrough();
+Walkthrough.Button = function NextButton({ children }: NextButtonProps) {
+  const { next, goTo, isLast, back } = useStepperContext();
 
-  return <>{children({ next, goTo, isLast })}</>;
-};
-
-interface BackButtonProps {
-  children: (back: () => void) => React.ReactNode;
-}
-
-Walkthrough.Back = function BackButton({ children }: BackButtonProps) {
-  const { back } = useWalkthrough();
-
-  return <>{children(back)}</>;
-};
-
-Walkthrough.Heading = function Heading({ children }: { children: string }) {
-  return <h2 className="text-center h2">{children}</h2>;
+  return <>{children({ next, goTo, isLast, back })}</>;
 };
 
 // Walkthrough.Waypoints = function Waypoints() {
-//   const { length, activeIndex } = useWalkthrough();
+//   const { length, activeIndex } = useStepperContext();
 
 //   return (
 //     <div className="flex justify-center">
 //       <div className="flex space-x-3">
 //         {Array.from(Array(length), (e, i) => (
 //           <div
-//             className={clsx("w-2.5 h-2.5 bg-gray-200 rounded-full transition", {
-//               "bg-gray-400 rounded-full ring-2 ring-gray-200":
-//                 activeIndex === i,
-//             })}
+//             className={classNames(
+//               "w-2.5 h-2.5 bg-gray-200 rounded-full transition",
+//               {
+//                 "bg-gray-400 rounded-full ring-2 ring-gray-200":
+//                   activeIndex === i,
+//               }
+//             )}
 //             key={i}
 //           />
 //         ))}
