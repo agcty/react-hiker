@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Walkthrough from "@components/Walkthrough";
+import Hiker from "@components/Hiker";
 
 import logo from "./logo.svg";
 
@@ -15,12 +15,12 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>Walkthrough Example!</p>
 
-        <Walkthrough>
-          <Walkthrough.Step id="1">Test1</Walkthrough.Step>
+        <Hiker>
+          <Hiker.Step id="1">Test1</Hiker.Step>
 
-          <Walkthrough.Step id="2">Test2</Walkthrough.Step>
+          <Hiker.Step id="2">Test2</Hiker.Step>
 
-          <Walkthrough.Step id="3">Test3</Walkthrough.Step>
+          <Hiker.Step id="3">Test3</Hiker.Step>
 
           <div
             style={{
@@ -29,7 +29,7 @@ function App() {
               gap: "10px",
             }}
           >
-            <Walkthrough.Button>
+            <Hiker.Button>
               {({ back }) => (
                 <button
                   type="button"
@@ -41,9 +41,9 @@ function App() {
                   Back
                 </button>
               )}
-            </Walkthrough.Button>
+            </Hiker.Button>
 
-            <Walkthrough.Button>
+            <Hiker.Button>
               {({ next }) => (
                 <button
                   type="button"
@@ -55,9 +55,9 @@ function App() {
                   Next
                 </button>
               )}
-            </Walkthrough.Button>
+            </Hiker.Button>
           </div>
-        </Walkthrough>
+        </Hiker>
       </header>
     </div>
   );
