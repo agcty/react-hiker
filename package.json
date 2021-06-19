@@ -5,8 +5,8 @@
     "dist",
     "README.md"
   ],
-  "main": "./dist/react-hikethrough.umd.js",
-  "module": "./dist/react-hikethrough.es.js",
+  "main": "./dist/react-hiker.umd.js",
+  "module": "./dist/react-hiker.es.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -40,8 +40,8 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/react-hikethrough.es.js",
-      "require": "./dist/react-hikethrough.umd.js"
+      "import": "./dist/react-hiker.es.js",
+      "require": "./dist/react-hiker.umd.js"
     }
   }
 }

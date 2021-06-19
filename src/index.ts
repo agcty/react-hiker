@@ -1,3 +1,5 @@
-import Button from "./components/ButtonTest";
+import Hiker from "@components/Hiker";
+import { HikerContext } from "@components/HikerContext";
 
-export { Button };
+export { HikerContext };
+export default Hiker;
