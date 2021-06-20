@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { HikerContext, useHikerContext } from "@components/HikerContext";
 
 interface HikerProps {
-  children: React.ReactNodeArray;
+  children: React.ReactNode;
   initial?: string;
 }
 
