@@ -92,15 +92,7 @@ Hiker.Step = function HikerStep({ id, children }: HikerStepProps) {
   const { activeStep } = useHikerContext();
 
   if (activeStep === id) {
-    return (
-      // <motion.div
-      //   initial={{ opacity: 0 }}
-      //   animate={{ opacity: 1 }}
-      //   exit={{ opacity: 0 }}
-      // >
-      <>{children}</>
-      // </motion.div>
-    );
+    return <>{children}</>;
   }
 
   return <></>;

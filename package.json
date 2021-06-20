@@ -1,5 +1,5 @@
 {
-  "version": "0.0.13",
+  "version": "0.0.14",
   "name": "react-hiker",
   "files": [
     "dist",
@@ -61,6 +61,5 @@
   "bugs": {
     "email": "alex@gogl.io",
     "url": "https://github.com/agcty/react-hiker/issues"
-  },
-  "exports": "./dist/react-hiker.modern.js"
+  }
 }
