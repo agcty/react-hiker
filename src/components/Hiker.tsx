@@ -1,30 +1,37 @@
 import React, { useState } from "react";
 
-import { StepperContext, useStepperContext } from "./WalkthroughContext";
+import { HikerContext, useHikerContext } from "./HikerContext";
 
-interface WalkthroughProps {
+interface HikerProps {
   children: React.ReactNode;
-  initialStep: string;
+  initial?: string;
 }
 
-function Walkthrough({ children, initialStep }: WalkthroughProps) {
-  // get all ids of child Walkthrough.Step components and create a list
+function Hiker({ children, initial }: HikerProps) {
+  // get all ids of child Hiker.Step components and create a list
   // we need that for making next() and back() possible
   const idList: string[] = React.Children.toArray(children)
     .flat()
-    .filter((c) => c.props?.id)
-    .map((comps) => comps.props.id);
+    .filter((c) => (c as any).props?.id)
+    .map((comps) => (comps as any).props.id);
 
   if (checkForDuplicates(idList)) {
     console.error(
-      "Warning! Your walkthrough has duplicate ids which results in unexpected behaviour!"
+      "Warning! Your Hiker has duplicate ids which results in unexpected behaviour!"
     );
   }
 
-  const [activeStep, setLocalActiveStep] = useState<string>(
-    // if initialStep is included in idList use that as the component to show, otherwise start with the first Step
-    idList.includes(initialStep) ? initialStep : idList[0]
-  );
+  const getInitialStep = () => {
+    // if initial exists in idList use that as the activeStep
+    if (initial && idList.includes(initial as string)) {
+      return initial;
+    }
+
+    // else return the first id of the list
+    return idList[0];
+  };
+
+  const [activeStep, setLocalActiveStep] = useState<string>(getInitialStep());
 
   const activeIndex = idList.indexOf(activeStep);
 
@@ -59,7 +66,7 @@ function Walkthrough({ children, initialStep }: WalkthroughProps) {
   };
 
   return (
-    <StepperContext.Provider
+    <HikerContext.Provider
       value={{
         setActiveStep,
         next,
@@ -72,22 +79,17 @@ function Walkthrough({ children, initialStep }: WalkthroughProps) {
       }}
     >
       {children}
-
-      {activeStep}
-    </StepperContext.Provider>
+    </HikerContext.Provider>
   );
 }
 
-interface WalkthroughStepProps {
+interface HikerStepProps {
   id: string;
   children: React.ReactNode;
 }
 
-Walkthrough.Step = function WalkthroughStep({
-  id,
-  children,
-}: WalkthroughStepProps) {
-  const { activeStep } = useStepperContext();
+Hiker.Step = function HikerStep({ id, children }: HikerStepProps) {
+  const { activeStep } = useHikerContext();
 
   if (activeStep === id) {
     return (
@@ -118,14 +120,14 @@ interface NextButtonProps {
   }) => React.ReactNode;
 }
 
-Walkthrough.Button = function NextButton({ children }: NextButtonProps) {
-  const { next, goTo, isLast, back } = useStepperContext();
+Hiker.Button = function NextButton({ children }: NextButtonProps) {
+  const { next, goTo, isLast, back } = useHikerContext();
 
   return <>{children({ next, goTo, isLast, back })}</>;
 };
 
-// Walkthrough.Waypoints = function Waypoints() {
-//   const { length, activeIndex } = useStepperContext();
+// Hiker.Waypoints = function Waypoints() {
+//   const { length, activeIndex } = useHikerContext();
 
 //   return (
 //     <div className="flex justify-center">
@@ -151,4 +153,4 @@ function checkForDuplicates(array: Array<string | number>) {
   return new Set(array).size !== array.length;
 }
 
-export default Walkthrough;
+export default Hiker;

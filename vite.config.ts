@@ -2,21 +2,27 @@ import { resolve } from "path";
 
 import reactRefresh from "@vitejs/plugin-react-refresh";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import dts from "vite-dts";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   build: {
     lib: {
-      entry: resolve(__dirname, "src/index.ts"),
-      name: "MyLib",
+      entry: resolve(__dirname, "src/index.tsx"),
+      name: "Hiker",
     },
-
+    sourcemap: true,
+    // Reduce bloat from legacy polyfills.
+    target: "esnext",
+    // Leave minification up to applications.
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: ["react", "react-dom"],
       output: {
+        // Since we publish our ./src folder, there's no point
+        // in bloating sourcemaps with another copy of it.
+        sourcemapExcludeSources: true,
+
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
@@ -25,5 +31,5 @@ export default defineConfig({
       },
     },
   },
-  plugins: [reactRefresh(), tsconfigPaths()],
+  plugins: [reactRefresh(), dts()],
 });
