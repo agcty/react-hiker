@@ -1,27 +1,24 @@
 {
-  "version": "0.0.2",
+  "version": "0.0.12",
   "name": "react-hiker",
   "files": [
     "dist",
     "README.md"
   ],
   "license": "MIT",
-  "main": "./dist/react-hiker.umd.js",
-  "module": "./dist/react-hiker.es.js",
+  "main": "dist/react-hiker.js",
+  "module": "dist/react-hiker.esm.js",
+  "unpkg": "dist/react-hiker.umd.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "microbundle build --jsx React.createElement --generateTypes -o dist",
     "serve": "vite preview",
-    "lint": "eslint -c .eslintrc.json src --fix",
-    "build:types": "tsc src/index.ts --declaration --emitDeclarationOnly --jsx react --esModuleInterop --outDir dist"
+    "lint": "eslint -c .eslintrc.json src --fix"
   },
-  "dependencies": {
-    "@vitejs/plugin-react-refresh": "^1.3.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "vite": "^2.3.7",
-    "vite-dts": "^1.0.3",
-    "vite-tsconfig-paths": "^3.3.13"
+  "peerDependencies": {
+    "react": ">=17",
+    "react-dom": ">=17"
   },
   "devDependencies": {
     "@types/babel__core": "^7.1.14",
@@ -30,6 +27,7 @@
     "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
+    "@vitejs/plugin-react-refresh": "^1.3.1",
     "eslint": "^7.29.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.3.0",
@@ -39,14 +37,12 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-unused-imports": "^1.1.1",
+    "microbundle": "^0.13.3",
     "prettier": "^2.3.1",
-    "rollup-plugin-typescript2": "^0.30.0",
-    "typescript": "^4.3.2"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/react-hiker.es.js",
-      "require": "./dist/react-hiker.umd.js"
-    }
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "typescript": "^4.3.2",
+    "vite": "^2.3.7",
+    "vite-tsconfig-paths": "^3.3.13"
   }
 }

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
-import Hiker from "@components/Hiker";
-
+import Hiker from "./components/Hiker";
 import logo from "./logo.svg";
 
 import "./App.css";

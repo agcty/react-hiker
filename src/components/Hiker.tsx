@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { HikerContext, useHikerContext } from "@components/HikerContext";
+import { HikerContext, useHikerContext } from "./HikerContext";
 
 interface HikerProps {
   children: React.ReactNode;
