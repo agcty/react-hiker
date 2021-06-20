@@ -12,8 +12,8 @@ function Hiker({ children, initial }: HikerProps) {
   // we need that for making next() and back() possible
   const idList: string[] = React.Children.toArray(children)
     .flat()
-    .filter((c) => c.props?.id)
-    .map((comps) => comps.props.id);
+    .filter((c) => (c as any).props?.id)
+    .map((comps) => (comps as any).props.id);
 
   if (checkForDuplicates(idList)) {
     console.error(
