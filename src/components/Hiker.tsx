@@ -53,7 +53,13 @@ function Hiker({ children, initial }: HikerProps) {
   };
 
   const goTo = (id: string) => {
-    setLocalActiveStep(idList[idList.indexOf(id)]);
+    if (idList.includes(id)) {
+      setLocalActiveStep(idList[idList.indexOf(id)]);
+    } else {
+      console.warn(
+        `Step id ${id} not found in idList, check that all of your ids are correct!`
+      );
+    }
   };
 
   const back = () => {

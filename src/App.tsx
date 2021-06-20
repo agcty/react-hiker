@@ -55,6 +55,20 @@ function App() {
                 </button>
               )}
             </Hiker.Button>
+
+            <Hiker.Button>
+              {({ goTo }) => (
+                <button
+                  type="button"
+                  style={{ marginTop: "60px" }}
+                  onClick={() => {
+                    goTo("55");
+                  }}
+                >
+                  GoTo 55
+                </button>
+              )}
+            </Hiker.Button>
           </div>
         </Hiker>
       </header>
