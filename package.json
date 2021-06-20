@@ -9,13 +9,20 @@
   "main": "dist/react-hiker.js",
   "module": "dist/react-hiker.esm.js",
   "unpkg": "dist/react-hiker.umd.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "microbundle build --jsx React.createElement --generateTypes -o dist",
+    "build": "microbundle build --jsx React.createElement -o dist",
     "serve": "vite preview",
     "lint": "eslint -c .eslintrc.json src --fix"
   },
+  "keywords": [
+    "react",
+    "hiker",
+    "walkthrough",
+    "journey",
+    "onboarding"
+  ],
   "peerDependencies": {
     "react": ">=17",
     "react-dom": ">=17"
@@ -44,5 +51,16 @@
     "typescript": "^4.3.2",
     "vite": "^2.3.7",
     "vite-tsconfig-paths": "^3.3.13"
-  }
+  },
+  "homepage": "https://gogl.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agcty/react-hiker",
+    "directory": "/"
+  },
+  "bugs": {
+    "email": "alex@gogl.io",
+    "url": "https://github.com/agcty/react-hiker/issues"
+  },
+  "exports": "./dist/react-hiker.modern.js"
 }
