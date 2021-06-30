@@ -39,10 +39,6 @@ function Hiker({ children, initial }: HikerProps) {
 
   const { length } = idList;
 
-  const setActiveStep = (newActiveStep: string) => {
-    setLocalActiveStep(newActiveStep);
-  };
-
   const next = () => {
     // canot go further than the last element
     if (activeIndex === idList.length - 1) {
@@ -74,7 +70,6 @@ function Hiker({ children, initial }: HikerProps) {
   return (
     <HikerContext.Provider
       value={{
-        setActiveStep,
         next,
         activeStep,
         back,
@@ -123,29 +118,6 @@ Hiker.Button = function NextButton({ children }: NextButtonProps) {
 
   return <>{children({ next, goTo, isLast, back })}</>;
 };
-
-// Hiker.Waypoints = function Waypoints() {
-//   const { length, activeIndex } = useHikerContext();
-
-//   return (
-//     <div className="flex justify-center">
-//       <div className="flex space-x-3">
-//         {Array.from(Array(length), (e, i) => (
-//           <div
-//             className={classNames(
-//               "w-2.5 h-2.5 bg-gray-200 rounded-full transition",
-//               {
-//                 "bg-gray-400 rounded-full ring-2 ring-gray-200":
-//                   activeIndex === i,
-//               }
-//             )}
-//             key={i}
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
 
 function checkForDuplicates(array: Array<string | number>) {
   return new Set(array).size !== array.length;

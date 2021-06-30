@@ -2,7 +2,6 @@ import React from "react";
 
 interface HikerContextProps {
   activeStep: string;
-  setActiveStep: (newActiveStep: string) => void;
   next: () => void;
   goTo: (id: string) => void;
   back: () => void;
@@ -13,7 +12,6 @@ interface HikerContextProps {
 
 export const HikerContext = React.createContext<HikerContextProps>({
   activeStep: "",
-  setActiveStep: () => "",
   next: () => null,
   goTo: () => null,
   back: () => null,
